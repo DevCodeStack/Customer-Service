@@ -36,7 +36,7 @@ class JwtTokenUtilTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		tokenUtil.setSecret("secretKey");
+		tokenUtil.setSecret("0194cc426c227da58721b57cdde3fc8b6se4cr67et1k56ey9");
 		
 		customer = new Customer();
 		customer.setFirstName("Fname");
@@ -56,49 +56,49 @@ class JwtTokenUtilTest {
 	@Test
 	void generateToken_Success() {
 		
-		String token = tokenUtil.generateToken(customer);
-		assertEquals(customer.getUserName(), tokenUtil.getUsernameFromToken(token));
+		var token = tokenUtil.generateToken(customer);
+		assertEquals(customer.getUserName(), tokenUtil.getUsernameFromToken(token.getToken()));
 		
 	}
 	
 	@Test
 	void validateToken_ValidToken() {
-		String token = tokenUtil.generateToken(customer);
+		var token = tokenUtil.generateToken(customer);
 		
 		when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-		assertThat(tokenUtil.validateToken(token));
+		assertThat(tokenUtil.validateToken(token.getToken()));
 		
 	}
 	
 	@Test
 	void validateToken_InvalidToken() {
-		String token = tokenUtil.generateToken(customer);
+		var token = tokenUtil.generateToken(customer);
 		customer.setUserName("FirstName");
 		
 		when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-		assertEquals(false, tokenUtil.validateToken(token));
+		assertEquals(false, tokenUtil.validateToken(token.getToken()));
 		
 	}
 	
 	@Test
 	void validateToken_CustomException() {
-		String token = tokenUtil.generateToken(customer);
+		var token = tokenUtil.generateToken(customer);
 		
 		when(customerRepository.findById(any())).thenReturn(Optional.empty());
-		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token);});
+		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token.getToken());});
 		
 		customer.setActive('N');
 		when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token);});
+		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token.getToken());});
 		
 	}
 	
 	@Test
 	void validateToken_SQLException() {
-		String token = tokenUtil.generateToken(customer);
+		var token = tokenUtil.generateToken(customer);
 		
 		when(customerRepository.findById(any())).thenThrow(new RuntimeException());
-		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token);});
+		assertThrows(InvalidTokenException.class, () -> {tokenUtil.validateToken(token.getToken());});
 		
 	}
 

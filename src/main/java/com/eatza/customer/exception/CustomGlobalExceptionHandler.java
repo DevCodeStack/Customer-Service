@@ -45,6 +45,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponseDto> exception(Exception exception) {
 		log.debug("Handling Default Exception");
+		exception.printStackTrace();
 		 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				 .body(new ErrorResponseDto(ErrorCodesEnum.INTERNAL_SERVER_ERROR.getCode(), 
 						 ErrorCodesEnum.INTERNAL_SERVER_ERROR.getMsg(), 

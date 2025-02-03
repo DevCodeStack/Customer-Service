@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eatza.customer.dto.TokenDto;
 import com.eatza.customer.dto.UserDto;
 import com.eatza.customer.exception.CustomerException;
 import com.eatza.customer.exception.InvalidTokenException;
@@ -26,7 +27,7 @@ public class JwtAuthenticationServiceImpl implements JwtAuthenticationService {
 	JwtTokenUtil tokenUtil;
 	
 	@Override
-	public String authenticateUser(UserDto userDto) throws UnauthorizedException, CustomerException {
+	public TokenDto authenticateUser(UserDto userDto) throws UnauthorizedException, CustomerException {
 		try {
 			Optional<Customer> cust = customerRepository.findByUsername(userDto.getUsername());
 			if(!cust.isPresent())

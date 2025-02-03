@@ -4,6 +4,7 @@ import com.eatza.customer.dto.CustomerDetailsUpdateDto;
 import com.eatza.customer.dto.CustomerRegistrationDto;
 import com.eatza.customer.dto.CustomerRegistrationResponseDto;
 import com.eatza.customer.exception.CustomerException;
+import com.eatza.customer.model.Customer;
 
 public interface CustomerService {
 
@@ -14,5 +15,9 @@ public interface CustomerService {
 	CustomerDetailsUpdateDto updateUserPassword(Long id, String oldPassword, String newPassword) throws CustomerException;
 
 	CustomerDetailsUpdateDto updateUserActive(Long id, char active) throws CustomerException;
+	
+	Customer fetchById(Long id);
+	
+	Customer fetchByUsername(String username);
 
 }

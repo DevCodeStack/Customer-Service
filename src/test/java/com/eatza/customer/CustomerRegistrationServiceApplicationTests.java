@@ -11,7 +11,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 
 import com.eatza.customer.config.JwtFilter;
 import com.eatza.customer.util.JwtTokenUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerRegistrationServiceApplicationTests {

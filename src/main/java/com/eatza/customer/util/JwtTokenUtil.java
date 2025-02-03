@@ -3,6 +3,7 @@ package com.eatza.customer.util;
 import static com.eatza.customer.util.ErrorCodesEnum.TOKEN_ERROR;
 
 import java.io.Serializable;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.eatza.customer.dto.TokenDto;
 import com.eatza.customer.exception.InvalidTokenException;
 import com.eatza.customer.exception.UnauthorizedException;
 import com.eatza.customer.model.Customer;
@@ -21,6 +23,8 @@ import com.eatza.customer.repository.CustomerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.Data;
 
 @Data
@@ -66,18 +70,29 @@ public class JwtTokenUtil implements Serializable{
 		return expiration.before(new Date());
 	}
 	
-	public String generateToken(Customer customer) {
+	public TokenDto generateToken(Customer customer) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("id", customer.getId());
-		return finalToken(claims, customer);
+		return TokenDto.builder()
+				.token(finalToken(claims, customer))
+				.expiry(JWT_TOKEN_VALIDITY).build();
 	}
 	
 	private String finalToken(Map<String, Object> claims, Customer customer) {
-		return Jwts.builder().setClaims(claims).setSubject(customer.getUserName()).setIssuedAt(new Date(System.currentTimeMillis()))
+		return Jwts.builder()
+				.setClaims(claims)
+				.setSubject(customer.getUserName())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setId(Long.toString(customer.getId()))
-			.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
-			.signWith(SignatureAlgorithm.HS512, secret).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+				.signWith(getSignKey(), SignatureAlgorithm.HS256)
+				.compact();
 	}
+	
+	private Key getSignKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 	
 	public Boolean validateToken(String token) throws InvalidTokenException {
 		try {

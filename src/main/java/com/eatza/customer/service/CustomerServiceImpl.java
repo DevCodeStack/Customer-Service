@@ -1,6 +1,6 @@
 package com.eatza.customer.service;
 
-import static com.eatza.customer.util.ErrorCodesEnum.SQL_UPDATE_FAILED;
+import static com.eatza.customer.util.ErrorCodesEnum.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +19,7 @@ import com.eatza.customer.exception.CustomerException;
 import com.eatza.customer.model.Customer;
 import com.eatza.customer.repository.CustomerRepository;
 import com.eatza.customer.util.CommonUtil;
+import com.eatza.customer.util.ErrorCodesEnum;
 import com.eatza.customer.util.JwtTokenUtil;
 import com.eatza.customer.util.ModelToDtoParser;
 
@@ -128,6 +129,34 @@ public class CustomerServiceImpl implements CustomerService {
 			if(!(ex instanceof CustomerException))
 				throw new CustomerException(ex.getMessage());
 			throw (CustomerException) ex;
+		}
+	}
+
+	@Override
+	public Customer fetchById(Long id) {
+		try {
+			Optional<Customer> customer = customerRepository.findById(id);
+			if(customer.isPresent())
+				return customer.get();
+			throw new CustomerException("Customer not found", NO_RECORDS_FOUND);
+		} catch (CustomerException ce) {
+			throw ce;
+		} catch (Exception ex){
+			throw new CustomerException(ex.getMessage());
+		}
+	}
+	
+	@Override
+	public Customer fetchByUsername(String username) {
+		try {
+			Optional<Customer> customer = customerRepository.findByUsername(username);
+			if(customer.isPresent())
+				return customer.get();
+			throw new CustomerException("Customer not found", NO_RECORDS_FOUND);
+		} catch (CustomerException ce) {
+			throw ce;
+		} catch (Exception ex){
+			throw new CustomerException(ex.getMessage());
 		}
 	}
 

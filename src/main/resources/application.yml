@@ -6,7 +6,7 @@ spring:
     - local
   cloud:
     config:
-      fail-fast: true
+      fail-fast: false  #Keep false when config service is not used
       uri:
       - http://localhost:8080
   

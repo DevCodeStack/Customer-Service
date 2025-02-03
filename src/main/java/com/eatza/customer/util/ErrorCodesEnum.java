@@ -5,7 +5,8 @@ public enum ErrorCodesEnum {
 	INTERNAL_SERVER_ERROR("EX500", "Internal service error occured. Please contact support for help"),
 	AUTHENTICATION_ERROR("EX401", "Authentication failed for the user"),
 	TOKEN_ERROR("EX900", "Invalid token"),
-	SQL_UPDATE_FAILED("EX901", "Failed to update field");
+	SQL_UPDATE_FAILED("EX901", "Failed to update field"),
+	NO_RECORDS_FOUND("EX902", "No records found for given data");
 	
 	private String code;
 	private String msg;

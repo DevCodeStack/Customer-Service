@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.eatza.customer.dto.TokenDto;
 import com.eatza.customer.dto.UserDto;
 import com.eatza.customer.exception.CustomerException;
 import com.eatza.customer.exception.UnauthorizedException;
@@ -58,14 +59,14 @@ class JwtAuthenticationServiceImplTest {
 	//Positive test case : authenticateUser
 	@Test
 	void authenticateUserSuccess() {
-		String token = "token";
+		var token = TokenDto.builder().token("myToken").build();
 		customer.setPassword(CommonUtil.passwordEncoder().encode(customer.getPassword()));
 		
 		when(customerRepository.findByUsername(any())).thenReturn(Optional.of(customer));
 		when(tokenUtil.generateToken(any())).thenReturn(token);
 		
-		String generatedToken = authenticationServiceImpl.authenticateUser(userDto);
-		assertEquals(token, generatedToken);
+		var generatedToken = authenticationServiceImpl.authenticateUser(userDto);
+		assertEquals(token.getToken(), generatedToken.getToken());
 		
 	}
 	

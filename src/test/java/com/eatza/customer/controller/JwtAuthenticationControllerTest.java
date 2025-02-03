@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.eatza.customer.dto.ErrorResponseDto;
+import com.eatza.customer.dto.TokenDto;
 import com.eatza.customer.dto.UserDto;
 import com.eatza.customer.exception.CustomGlobalExceptionHandler;
 import com.eatza.customer.exception.InvalidTokenException;
@@ -61,14 +62,14 @@ public class JwtAuthenticationControllerTest {
 	@Test
 	public void login_Success() throws Exception {
 		
-		String token = "myToken";
+		var token = TokenDto.builder().token("myToken").build();
 		when(authenticationService.authenticateUser(any())).thenReturn(token);
 
 		MockHttpServletResponse response = mockMvc.perform(
 				post("/login").contentType(MediaType.APPLICATION_JSON)
 				.content(jsonUserDto.write(userDto).getJson())).andReturn().getResponse();
 	
-		assertEquals(token, response.getContentAsString());
+		assertEquals(token.getToken(), (new ObjectMapper().readValue(response.getContentAsString(), TokenDto.class)).getToken());
 		
 	}
 	
