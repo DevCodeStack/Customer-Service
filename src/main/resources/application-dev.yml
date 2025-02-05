@@ -8,7 +8,7 @@ password:
     days: 90
     
 jwt:
-  secret: secretKey
+  secret: 
      
 logging:
   pattern:
