@@ -1,7 +1,7 @@
-name: Hello World
+name: AWS CodeBuild Runner
 on: [push]
 jobs:
-  Hello-World-Job:
+  Runner:
     runs-on:
       - codebuild-Eatza-Customer-Service-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
