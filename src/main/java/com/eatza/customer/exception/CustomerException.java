@@ -25,6 +25,11 @@ public class CustomerException extends RuntimeException{
 		this.error = ErrorCodesEnum.INTERNAL_SERVER_ERROR;
 	}
 	
+	public CustomerException(String message, Throwable exception) {
+		super(message, exception);
+		this.error = ErrorCodesEnum.INTERNAL_SERVER_ERROR;
+	}
+	
 	public CustomerException(String message, ErrorCodesEnum error) {
 		super(message);
 		this.error = error;

@@ -52,15 +52,12 @@ public class CustomerServiceImpl implements CustomerService {
 			customer.setMailId(customerDto.getMailId());
 			customer.setPasswordExpiry(LocalDateTime.of(LocalDate.now(), LocalTime.now()).plusDays(passwordExpiryDays));
 									
-			Customer savedCustomer = customerRepository.save(customer);
-			if(savedCustomer != null)
-				return ModelToDtoParser.parser(savedCustomer);
-			
-			throw new CustomerException("Failed to add user");
+			customerRepository.save(customer);
+			return ModelToDtoParser.parser(customer);
 			
 		} catch (Exception ex){
 			if(!(ex instanceof CustomerException))
-				throw new CustomerException(ex.getMessage());
+				throw new CustomerException("Failed to add user", ex);
 			throw (CustomerException) ex;
 		}
 	}
