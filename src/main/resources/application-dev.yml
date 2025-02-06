@@ -1,15 +1,58 @@
+#spring:
+#  cloud:
+#    config:
+#      label: develop
+#      
+#password:
+#  expiry:
+#    days: 90
+#    
+#jwt:
+#  secret: 
+#     
+#logging:
+#  pattern:
+#    console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"
+#  level:
+#    org.springframework: ERROR
+#    com.eatza: DEBUG
+
+
+server:
+  port: 8082
+
 spring:
-  cloud:
-    config:
-      label: develop
-      
+  datasource:
+    url: jdbc:postgresql://database-station-2.cbaqou6cmbcu.ap-south-1.rds.amazonaws.com/capstone
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
 password:
   expiry:
     days: 90
     
 jwt:
-  secret: 
-     
+  secret: 0194cc426c227da58721b57cdde3fc8b6se4cr67et1k56ey9
+
+# secretKey
+
 logging:
   pattern:
     console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"
