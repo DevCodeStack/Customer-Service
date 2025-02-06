@@ -3,13 +3,14 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/customerdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: Welcome123$
+    url: jdbc:postgresql://localhost:5432/capstone
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
