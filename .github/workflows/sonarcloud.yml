@@ -62,6 +62,8 @@ jobs:
           args:
             -Dsonar.projectKey=devuniverse_customer_service
             -Dsonar.organization=devuniverse
+            -Dsonar.sources=src/main/java/
+            -Dsonar.java.binaries=target/classes
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
