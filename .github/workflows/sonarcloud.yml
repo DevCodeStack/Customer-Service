@@ -53,7 +53,7 @@ jobs:
       - name: Build Project
         run: mvn clean install
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8 # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+        uses: SonarSource/sonarqube-scan-action@master # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
         env:
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on SonarQube, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
