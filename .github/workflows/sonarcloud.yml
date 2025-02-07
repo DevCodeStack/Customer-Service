@@ -51,7 +51,7 @@ jobs:
         with:
           java-version: 17
       - name: Build Project
-        run: mnv clean install
+        run: mvn clean install
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8 # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
         env:
