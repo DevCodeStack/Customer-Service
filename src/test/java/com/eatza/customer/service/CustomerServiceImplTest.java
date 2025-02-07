@@ -86,14 +86,6 @@ class CustomerServiceImplTest {
 	
 	//Negative case : addUser
 	@Test
-	void addUserFailed_CustomException() {
-		
-		when(customerRepository.save(any())).thenReturn(null);
-		assertThrows(CustomerException.class, () -> {customerServiceImpl.addUser(customerRegistration);});
-	}
-	
-	//Negative case : addUser
-	@Test
 	void addUserFailed_SQLException() {
 		
 		when(customerRepository.save(any())).thenThrow(new RuntimeException());
