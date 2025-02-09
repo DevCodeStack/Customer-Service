@@ -70,13 +70,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
 	      <groupId>org.springframework.cloud</groupId>
 	      <artifactId>spring-cloud-starter-config</artifactId>
 	    </dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -119,6 +120,11 @@
 				<version>0.8.7</version>
 				<configuration>
 					<append>true</append>
+					<excludes>
+						<exclude>com/eatza/customer/CustomerRegistrationServiceApplication.class</exclude>
+						<exclude>com/eatza/customer/config/**</exclude>
+						<exclude>com/eatza/customer/exception/**</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
@@ -160,12 +166,12 @@
 					                    <limit>
 					                        <counter>LINE</counter>
 					                        <value>COVEREDRATIO</value>
-					                        <minimum>0.75</minimum>
+					                        <minimum>0.90</minimum>
 					                    </limit>
 					                    <limit>
 					                        <counter>BRANCH</counter>
 					                        <value>COVEREDRATIO</value>
-					                        <minimum>0.75</minimum>
+					                        <minimum>0.90</minimum>
 					                     </limit>
 					                </limits>
 					            </rule>

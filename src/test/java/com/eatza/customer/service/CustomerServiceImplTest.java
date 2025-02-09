@@ -1,6 +1,7 @@
 package com.eatza.customer.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -242,6 +243,48 @@ class CustomerServiceImplTest {
 		
 		when(customerRepository.updateUserActive(id, active)).thenThrow(new RuntimeException());
 		assertThrows(CustomerException.class, () -> {customerServiceImpl.updateUserActive(id, active);});
+	}
+	
+	@Test
+	void fetchByIdSuccess() {
+		when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+		
+		assertEquals(customer.getMailId(), customerServiceImpl.fetchById(1l).getMailId());
+	}
+	
+	@Test
+	void fetchById_CustomException() {
+		when(customerRepository.findById(any())).thenReturn(Optional.empty());
+		
+		assertThrows(CustomerException.class, () -> customerServiceImpl.fetchById(1l));
+	}
+	
+	@Test
+	void fetchById_SQLException() {
+		when(customerRepository.findById(any())).thenThrow(new RuntimeException());
+		
+		assertThrows(CustomerException.class, () -> customerServiceImpl.fetchById(1l));
+	}
+	
+	@Test
+	void fetchByUsernameSuccess() {
+		when(customerRepository.findByUsername(anyString())).thenReturn(Optional.of(customer));
+		
+		assertEquals(customer.getMailId(), customerServiceImpl.fetchByUsername("fl234").getMailId());
+	}
+	
+	@Test
+	void fetchByUsername_CustomException() {
+		when(customerRepository.findByUsername(anyString())).thenReturn(Optional.empty());
+		
+		assertThrows(CustomerException.class, () -> customerServiceImpl.fetchByUsername("fl234"));
+	}
+	
+	@Test
+	void fetchByUsername_SQLException() {
+		when(customerRepository.findByUsername(anyString())).thenThrow(new RuntimeException());
+		
+		assertThrows(CustomerException.class, () -> customerServiceImpl.fetchByUsername("fl234"));
 	}
 
 }

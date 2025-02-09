@@ -2,17 +2,23 @@ package com.eatza.customer.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
@@ -26,6 +32,7 @@ import com.eatza.customer.dto.CustomerRegistrationResponseDto;
 import com.eatza.customer.dto.ErrorResponseDto;
 import com.eatza.customer.exception.CustomGlobalExceptionHandler;
 import com.eatza.customer.exception.CustomerException;
+import com.eatza.customer.model.Customer;
 import com.eatza.customer.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,6 +55,8 @@ class CustomerControllerTest {
 	
 	private JacksonTester<CustomerRegistrationDto> jsonRequestedCustomer;
 	
+	private Customer customer;
+	
 	@BeforeEach
 	void setUp() {
 		
@@ -63,7 +72,43 @@ class CustomerControllerTest {
 		requestedCustomer.setUserName("fl234");
 		requestedCustomer.setMailId("fn243@xyz.com");
 		requestedCustomer.setPassword("password");
+		
+		customer = new Customer();
+		customer.setFirstName("Fname");
+		customer.setLastName("Lname");
+		customer.setUserName("fl234");
+		customer.setMailId("fn243@xyz.com");
+		customer.setPassword("password");
+		customer.setActive('Y');
+		customer.setId(1l);
+		customer.setPasswordExpired('N');
+		customer.setCreateTimestamp(LocalDateTime.now());
+		customer.setUpdateTimestamp(LocalDateTime.now());
+		customer.setPasswordLastUpdate(LocalDateTime.now());
+		customer.setPasswordExpiry(LocalDateTime.of(LocalDate.now(), LocalTime.now()).plusDays(90));
 	}
+	
+	@Test
+    void testCustomerDetailsByIdSuccess() throws Exception {
+        when(customerService.fetchById(any())).thenReturn(customer);
+
+        mockMvc.perform(get("/customer/id/1"))
+                .andExpect(status().isOk());
+//                .andExpect(jsonPath("$.mailid()").exists());
+
+        verify(customerService, Mockito.times(1)).fetchById(1l);
+    }
+	
+	@Test
+    void testCustomerDetailsByNameSuccess() throws Exception {
+        when(customerService.fetchByUsername(anyString())).thenReturn(customer);
+
+        mockMvc.perform(get("/customer/name/fl234"))
+                .andExpect(status().isOk());
+//                .andExpect(jsonPath("$.mailid()").exists());
+
+        verify(customerService, Mockito.times(1)).fetchByUsername(anyString());
+    }
 
 	//Positive test case : userRegistration
 	@Test
