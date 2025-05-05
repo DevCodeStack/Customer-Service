@@ -16,6 +16,19 @@ spring:
       ddl-auto: update
     show-sql: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - metrics
+        - prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 eureka:
   client:
     fetch-registry: false
@@ -31,8 +44,6 @@ password:
     
 jwt:
   secret: 0194cc426c227da58721b57cdde3fc8b6se4cr67et1k56ey9
-
-# secretKey
 
 logging:
   pattern:

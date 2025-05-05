@@ -1,39 +1,31 @@
-#spring:
-#  cloud:
-#    config:
-#      label: develop
-#      
-#password:
-#  expiry:
-#    days: 90
-#    
-#jwt:
-#  secret: 
-#     
-#logging:
-#  pattern:
-#    console: "%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n"
-#  level:
-#    org.springframework: ERROR
-#    com.eatza: DEBUG
-
-
-server:
-  port: 8082
-
 spring:
   datasource:
-    url: jdbc:postgresql://database-station-2.cbaqou6cmbcu.ap-south-1.rds.amazonaws.com/capstone
+    url: jdbc:postgresql://postgresql:5432/capstone
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#		 Below properties for dialect can be selected by default
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - metrics
+        - prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 eureka:
   client:

@@ -1,7 +1,15 @@
-FROM openjdk:8
+FROM openjdk:17-jdk-slim
 
-COPY ./target/Customer-Service.jar customerservice.jar
+LABEL version="1.0" description="Eatza Customer Service"
 
-EXPOSE 8082
+COPY ./target/customer-service.jar customer-service.jar
 
-CMD ["java","-jar","-Dspring.profile.active=local","customerservice.jar"]
+# Below command does the same work as COPY
+# Apart from this it can extract files from a tar file as well when provided
+# ADD ./target/customer-service.jar customer-service.jar
+
+# Keep default port, the same can be altered when executing the image
+EXPOSE 8080
+
+ENTRYPOINT [ "java", "-jar", "customer-service.jar" ]
+CMD ["-Dspring.profile.active=local"]
